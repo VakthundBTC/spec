@@ -21,6 +21,17 @@ Vakthund is a Bitcoin full node. This document specifies Vakthund v0.1. It follo
 | 4 Verification                 | [4-verification.md](4-verification.md)                                           |
 | 5 Appendices                   | [5-appendices.md](5-appendices.md)                                               |
 
+## Source
+
+This specification is derived from the prose specification in the `docs/` folder of the `rust-btcd` repository,
+branch `rebuild`. It reflects that folder at commit:
+
+```
+8ba7197e45ff92b279ae39ba13761d452f9a4222
+```
+
+(2026-11-03, "Update block downloading flow").
+
 ## Conventions
 
 ### Requirements

@@ -16,6 +16,14 @@
 | [R10]  | BIP141, Segregated Witness (Consensus layer)                                                                   |
 | [R11]  | BIP144, Segregated Witness (Peer Services)                                                                     |
 | [R12]  | Bitcoin P2P network protocol, transport v1 message framing, as implemented in [R3] (`CMessageHeader`)          |
+| [R20]  | BIP94, Testnet 4                                                                                               |
+| [R21]  | BIP112, CHECKSEQUENCEVERIFY                                                                                    |
+| [R22]  | BIP113, Median time-past as endpoint for lock-time calculations                                                |
+| [R23]  | BIP130, sendheaders message                                                                                    |
+| [R24]  | BIP143, Transaction Signature Verification for Version 0 Witness Program                                       |
+| [R25]  | BIP147, Dealing with dummy stack element malleability                                                          |
+| [R26]  | BIP325, Signet                                                                                                 |
+| [R27]  | BIP341, Taproot: SegWit version 1 spending rules                                                               |
 
 ## 2.2 Informative
 

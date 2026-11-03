@@ -78,7 +78,7 @@ The node is in exactly one of three modes. The mode is owned by `block-sync`.
 |----------|------------------------------------------------------------------------------------------------|----------------------------------------------|
 | IBD      | [3.2.3 Initial block download](3-requirements/3.2.3-block-sync.md#initial-block-download-ibd) | Paused, except maintaining peer connections. |
 | Standard | [3.2.3 Standard mode](3-requirements/3.2.3-block-sync.md#standard-mode)                        | —                                            |
-| Reorg    | [3.2.3 Reorg](3-requirements/3.2.3-block-sync.md#reorg)                                        | Paused, except maintaining peer connections. |
+| Reorg    | [3.2.3 Reorg](3-requirements/3.2.3-block-sync.md#reorg)                                        | Paused, except maintaining peer connections; queued messages discarded. |
 
 ## 1.4 Definitions
 
@@ -86,7 +86,7 @@ The node is in exactly one of three modes. The mode is owned by `block-sync`.
 |-----------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | active chain                | The chain of blocks from genesis to the tip block whose UTXO set the node holds.                                                                                     |
 | tip, tip block              | The last block of the active chain. In height arithmetic `tip` is the height of the tip block; `tip+k` and `tip-k` are heights relative to it.                       |
-| chain work                  | The cumulative proof of work of a header and all its ancestors.                                                                                                      |
+| chain work                  | The sum of the work of a header and of all its ancestors, computed as in CHN-21.                                                                                     |
 | header entry                | A stored header together with its height and chain work.                                                                                                             |
 | candidate header chain      | Validated and stored headers that extend the active chain beyond the tip and whose blocks are not yet connected.                                                     |
 | last common ancestor (LCA)  | Of a header chain and the active chain: the last header of the header chain that is on the active chain.                                                             |
@@ -106,11 +106,15 @@ The node is in exactly one of three modes. The mode is owned by `block-sync`.
 | configured peer             | A peer listed in the `peers` key of the configuration.                                                                                                               |
 | connected peer              | A known peer whose in-memory state is `connected`.                                                                                                                   |
 | sync peer                   | The peer selected for header download during IBD.                                                                                                                    |
+| announcing peer             | The peer whose `headers` or `inv` message announced a header to the node.                                                                                            |
+| request                     | A `getheaders` or `getdata` sent by `block-sync`, with a deadline (BSY-30).                                                                                          |
+| failed request              | A request that reached its deadline unanswered.                                                                                                                      |
+| unavailable block           | A block for which every eligible peer has failed: request timeout or `notfound` (BSY-32).                                                                            |
 | message                     | One P2P protocol message: a message header (magic, command, payload length, checksum) and a payload.                                                                 |
 | command                     | The 12-byte command field of a message header; names the message type.                                                                                               |
 | owner (of a command)        | The module that sends and receives messages of that command.                                                                                                         |
 | routed message              | A received message pushed by `net` to the queue of its owner as `{peer, command, payload}`.                                                                          |
 | block locator               | A list of block hashes of the active chain, newest first, carried by `getheaders`.                                                                                   |
-| mutated block               | A block whose transactions do not match its header: a rejection for the merkle root, duplicate transactions, or the witness commitment.                              |
+| mutated block               | A block whose transactions do not match its header: a rejection by the mutation checks of CHN-07.                                                                    |
 | consensus failure           | A block that is invalid under consensus rules while its header is valid.                                                                                             |
 | first start                 | A start of the node with an empty data directory for the network in use.                                                                                             |
